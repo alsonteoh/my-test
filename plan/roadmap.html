@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plastic War — Campaign Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Black+Ops+One&family=Special+Elite&family=Stardos+Stencil:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main>
+  <section class="hero" style="padding-bottom:10px">
+    <div class="wrap">
+      <div class="kicker">FM-04 // Campaign roadmap</div>
+      <h1>Order of <span class="g">Battle</span></h1>
+      <p class="lead" style="margin-top:12px">The prototype is built in <b>7 milestones</b>. Each one ends with a version you can actually play, so you can steer early, not just at the end.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">01</span><h2>Phase 1: Prototype "Operation Breakfast"</h2></div>
+      <div class="card" style="margin-bottom:18px">
+        <div class="flex" style="justify-content:space-between"><b class="small" style="font-family:var(--font-stencil)">ACCEPTANCE TESTS PASSED (ticked by you after playing)</b><span class="small muted" data-meter-label="m"></span></div>
+        <div class="meter" data-meter="m" style="margin-top:8px"><i></i></div>
+        <p class="small muted" style="margin-top:8px">Your ticks are saved in this browser only, as a personal tracker. For now, everything stays unticked: nothing has been built yet.</p>
+      </div>
+
+      <div class="timeline" id="tl"></div>
+
+      <div class="grid g2" style="margin-top:22px">
+        <div class="card"><span class="tag red">OUT OF SCOPE</span>
+          <h3>Not in the prototype</h3>
+          <ul class="bullets small">
+            <li>Squadmates and squad commands</li><li>Weapons beyond rifle + grenade (bazooka pending Q4)</li>
+            <li>Gamepad support</li><li>Multiplayer of any kind</li><li>Save games, story, cutscenes, voice acting</li>
+            <li>Helicopters, base building, other levels</li>
+          </ul>
+        </div>
+        <div class="card"><span class="tag tan">RISKS</span>
+          <h3>What could slow us down</h3>
+          <ul class="bullets small">
+            <li><b>Vehicle feel:</b> driving physics takes several rounds of your feedback to get right</li>
+            <li><b>Mixed asset styles:</b> CC0 packs don't match each other. The plastic material is how we unify them.</li>
+            <li><b>Test loop:</b> I can't play the game, so each round of fixes depends on your reports</li>
+            <li><b>Mac specifics:</b> trackpad vs mouse aiming, and mouse capture behaviour on macOS. Test with a real mouse if you can.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">02</span><h2>After the prototype</h2><span class="pill warn">PROPOSED · NOT YET APPROVED</span></div>
+      <div class="grid g3">
+        <div class="card"><span class="tag tan">PHASE 2</span><h3>Vertical slice</h3><p class="small">Squad of 3 with simple orders, bazooka / flamethrower (melting!) / mortar / mines / sniper, a mounted jeep gun, gamepad support, rebindable keys, a full sound pass, and Tan tanks.</p></div>
+        <div class="card"><span class="tag tan">PHASE 3</span><h3>Campaign</h3><p class="small">5–8 missions mixing real-world rooms and dioramas, a light story (Sarge vs General Plastro), saves, and a mission select screen.</p></div>
+        <div class="card"><span class="tag tan">PHASE 4</span><h3>Air Attack</h3><p class="small">A flyable helicopter, air-support missions, and a co-pilot winch to pick up troops.</p></div>
+        <div class="card"><span class="tag tan">PHASE 5</span><h3>Commander layer</h3><p class="small">RTS-lite: collect resources, build structures, give orders from a top-down tactical view, and drop into any soldier.</p></div>
+        <div class="card"><span class="tag tan">PHASE 6</span><h3>Multiplayer?</h3><p class="small">Co-op or Green-vs-Tan PvP. A big piece of work, to be decided much later.</p></div>
+        <div class="card"><span class="tag tan">PHASE 6+</span><h3>Toys in Space</h3><p class="small">A bonus episode with low gravity and space toys.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="pager"></div>
+<footer id="foot"></footer>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  var M = [
+    { code: "M0", name: "Boot Camp", who: "You", size: "One-off setup", goal: "Godot and GitHub Desktop installed on your Mac, and the project opens.",
+      build: ["You follow the Boot Camp page", "I push an empty project skeleton with a test scene"],
+      tests: ["Godot opens the project with no red errors", "Pressing F5 shows a test scene with a spinning green soldier"] },
+    { code: "M1", name: "Boots on the Ground", who: "Me → you test", size: "Small", goal: "Walk around a grey-block kitchen, switching between third and first person.",
+      build: ["Grey-block kitchen at 36× scale (simple boxes stand in for furniture)", "Player movement: walk, sprint, crouch, prone, jump", "Camera rig: TPS spring arm, FPS head cam, V to toggle with a blend, Q to swap shoulder", "F3 FPS counter"],
+      tests: ["Movement feels responsive with a mouse", "V switches view smoothly, the camera never goes through walls", "The kitchen feels huge", "Runs smoothly on your Mac (F3 shows 55+ fps)"] },
+    { code: "M2", name: "Lock and Load", who: "Me → you test", size: "Medium", goal: "Shoot, aim, reload and throw grenades at targets.",
+      build: ["Rifle: hip-fire, aim-down-sights, recoil, tracers, impact effects, reload", "Grenade with a throw arc preview, bounces and explodes", "Health, damage, medkits, regen", "HUD: crosshair, hit markers, ammo, health"],
+      tests: ["Shooting feels punchy", "Aiming down sights works in both views", "Grenade arc is easy to read", "HUD is clear and doesn't get in the way"] },
+    { code: "M3", name: "Enemy Contact", who: "Me → you test", size: "Large", goal: "Tan soldiers patrol, spot you, take cover and flank.",
+      build: ["Tan rifleman with sight and hearing", "Patrol → Alert → Engage → Cover → Flank state machine", "Navigation mesh and cover points in the kitchen", "Plastic death: freeze, topple, clatter"],
+      tests: ["Fights feel 'middle ground': fair, but cover matters", "Enemies don't get stuck or walk through walls", "Deaths look like toy soldiers toppling"] },
+    { code: "M4", name: "Motor Pool", who: "Me → you test", size: "Medium", goal: "Drive the jeep around the kitchen.",
+      build: ["Jeep with wheel physics and suspension", "E to enter or exit, with the camera handled in both views", "Low-grip milk puddle surface", "Run over / knock down Tan soldiers"],
+      tests: ["Jeep is fun to drive with the keyboard", "Getting in and out is reliable", "Drifting on the milk feels right"] },
+    { code: "M5", name: "Heavy Armor", who: "Me → you test", size: "Medium", goal: "Drive the tank and blow through cereal-box walls.",
+      build: ["Tracked tank movement, with the turret following the mouse separately", "Main cannon with splash damage, plus machine gun", "Destructible soft cover (cereal boxes)", "Vehicle health; thrown out when destroyed"],
+      tests: ["Tank feels heavy but not frustrating", "Turret aiming is clear", "Breaking through the cereal wall is satisfying"] },
+    { code: "M6", name: "Kitchen Dressing", who: "Me + you (downloads)", size: "Large", goal: "Replace grey boxes with real CC0 art, the plastic shader, lighting and sound.",
+      build: ["You download the asset packs listed in Engineering", "I import and scale them and apply the plastic material", "Morning sunlight, soft shadows, global illumination", "Sound effects and music"],
+      tests: ["It looks like a real kitchen with real toy soldiers", "Plastic soldiers read clearly against the background", "Still smooth on your Mac (High preset)"] },
+    { code: "M7", name: "Operation Breakfast", who: "Me → you test", size: "Medium", goal: "The full mission from start to finish.",
+      build: ["Mission director: objective, reinforcements, win/lose", "Start menu, pause menu, basic settings (mouse sensitivity, graphics preset)", "Tuning pass based on your feedback", "Build a standalone Mac app you can double-click"],
+      tests: ["Can finish the mission in about 10–20 minutes", "Losing feels fair, winning feels earned", "You want to play it again"] }
+  ];
+  var html = M.map(function (m, i) {
+    return '<div class="tl-item">' +
+      '<details class="fold"' + (i === 1 ? " open" : "") + '><summary><span class="pill ' + (i === 0 ? "tan" : "green") + '">' + m.code + '</span><span class="fold-title">' + m.name + "</span>" +
+      '<span class="small muted">' + m.goal + "</span></summary>" +
+      '<div class="fold-body"><div class="flex small" style="margin-bottom:10px"><span class="pill">Who: ' + m.who + '</span><span class="pill">Size: ' + m.size + "</span></div>" +
+      '<div class="grid g2"><div><h3 style="font-size:16px">What gets built</h3><ul class="bullets small">' +
+      m.build.map(function (b) { return "<li>" + b + "</li>"; }).join("") + "</ul></div>" +
+      '<div><h3 style="font-size:16px">You tick these after playing</h3>' +
+      m.tests.map(function (t, j) { return '<label class="chk small"><input type="checkbox" data-persist="m' + i + "_" + j + '">' + t + "</label>"; }).join("") +
+      "</div></div></div></details></div>";
+  }).join("");
+  document.getElementById("tl").innerHTML = html;
+  // app.js has already wired existing checkboxes; wire these new ones.
+  document.querySelectorAll("#tl input[data-persist]").forEach(function (c) {
+    c.checked = !!PW.store.get("chk:" + c.dataset.persist, false);
+    c.addEventListener("change", function () { PW.store.set("chk:" + c.dataset.persist, c.checked); meter(); });
+  });
+  function meter() {
+    var all = document.querySelectorAll("#tl input[data-persist]");
+    var done = Array.prototype.filter.call(all, function (c) { return c.checked; }).length;
+    document.querySelector('[data-meter="m"] i').style.width = (done / all.length * 100) + "%";
+    document.querySelector('[data-meter-label="m"]').textContent = done + " / " + all.length;
+  }
+  meter();
+})();
+</script>
+</body>
+</html>

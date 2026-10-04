@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plastic War — Field Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Black+Ops+One&family=Special+Elite&family=Stardos+Stencil:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main>
+  <section class="hero" style="padding-bottom:10px">
+    <div class="wrap">
+      <div class="kicker">FM-01 // Gameplay & combat</div>
+      <h1>Field <span class="g">Manual</span></h1>
+      <p class="lead" style="margin-top:12px">How the prototype plays: the core loop, the camera, controls, combat tuning, enemy behaviour, and the two vehicles.</p>
+    </div>
+  </section>
+
+  <!-- CORE LOOP -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">01</span><h2>Core loop</h2></div>
+      <div class="svg-frame reveal" role="img" aria-label="Core loop: Scout, Engage, Advance, Commandeer, Objective, then repeat">
+        <svg viewBox="0 0 900 220" width="100%">
+          <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#9cc552"/></marker></defs>
+          <g font-family="Black Ops One" font-size="17" text-anchor="middle">
+            <g><rect x="20" y="70" width="140" height="70" rx="12" fill="#27311e" stroke="#5f8a2b" stroke-width="2"/><text x="90" y="103" fill="#e7ead9">SCOUT</text><text x="90" y="124" font-family="Barlow" font-size="13" fill="#a9b092">spot Tan, read terrain</text></g>
+            <g><rect x="195" y="70" width="140" height="70" rx="12" fill="#27311e" stroke="#5f8a2b" stroke-width="2"/><text x="265" y="103" fill="#e7ead9">ENGAGE</text><text x="265" y="124" font-family="Barlow" font-size="13" fill="#a9b092">cover, shoot, grenade</text></g>
+            <g><rect x="370" y="70" width="140" height="70" rx="12" fill="#27311e" stroke="#5f8a2b" stroke-width="2"/><text x="440" y="103" fill="#e7ead9">ADVANCE</text><text x="440" y="124" font-family="Barlow" font-size="13" fill="#a9b092">push, grab pickups</text></g>
+            <g><rect x="545" y="70" width="150" height="70" rx="12" fill="#27311e" stroke="#cfab6c" stroke-width="2"/><text x="620" y="103" fill="#e7ead9">COMMANDEER</text><text x="620" y="124" font-family="Barlow" font-size="13" fill="#a9b092">jeep / tank when useful</text></g>
+            <g><rect x="730" y="70" width="150" height="70" rx="12" fill="#3d5c19" stroke="#9cc552" stroke-width="2"/><text x="805" y="103" fill="#e7ead9">OBJECTIVE</text><text x="805" y="124" font-family="Barlow" font-size="13" fill="#d7e6b8">destroy, capture, escape</text></g>
+          </g>
+          <g stroke="#9cc552" stroke-width="2.5" fill="none" marker-end="url(#ar)">
+            <path d="M160 105H193"/><path d="M335 105H368"/><path d="M510 105H543"/><path d="M695 105H728"/>
+            <path d="M805 140 V185 H90 V142" stroke-dasharray="6 6"/>
+          </g>
+          <text x="450" y="205" text-anchor="middle" font-family="Special Elite" font-size="13" fill="#a9b092">next area / next mission</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAMERA -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">02</span><h2>Camera: third-person ⇄ first-person</h2></div>
+      <div class="grid g2">
+        <div class="svg-frame reveal" role="img" aria-label="Side view diagram showing camera position in TPS and FPS modes">
+          <svg viewBox="0 0 420 260" width="100%" id="camSvg">
+            <rect width="420" height="260" fill="#10150c"/>
+            <line x1="0" y1="215" x2="420" y2="215" stroke="#45522f" stroke-width="2"/>
+            <!-- soldier -->
+            <g transform="translate(230 125)">
+              <rect x="-26" y="84" width="52" height="7" rx="2" fill="#5f8a2b"/>
+              <path d="M-7 0h14l4 40h-22z" fill="#9cc552"/><path d="M-7 40l-4 44h8l3-30 3 30h8l-4-44z" fill="#7aa53a"/>
+              <circle cx="0" cy="-12" r="10" fill="#9cc552"/><path d="M-12 -14q12-16 24 0z" fill="#5f8a2b"/>
+              <rect x="4" y="6" width="44" height="5" rx="2" fill="#3d5c19"/>
+            </g>
+            <!-- target -->
+            <g transform="translate(395 130)"><circle r="12" fill="none" stroke="#cfab6c" stroke-width="2"/><circle r="3" fill="#cfab6c"/></g>
+            <!-- camera -->
+            <g id="camRig" style="transition:transform .6s cubic-bezier(.3,.8,.3,1)" transform="translate(150 85)">
+              <path id="camCone" d="M0 0 L250 -40 L250 70 Z" fill="rgba(224,179,65,.10)" stroke="rgba(224,179,65,.5)" stroke-dasharray="4 4"/>
+              <rect x="-18" y="-11" width="28" height="22" rx="4" fill="#e0b341"/><path d="M10 -6 L20 -11 V11 L10 6z" fill="#e0b341"/>
+            </g>
+            <text id="camLabel" x="16" y="30" font-family="Black Ops One" font-size="18" fill="#e7ead9">THIRD-PERSON</text>
+            <text id="camSub" x="16" y="50" font-family="Barlow" font-size="13" fill="#a9b092">over the right shoulder · see your soldier and surroundings</text>
+          </svg>
+        </div>
+        <div class="card reveal">
+          <div class="seg" data-tabs="cam"><button data-tab="tps">Third-person</button><button data-tab="fps">First-person</button></div>
+          <div class="tab-panel" data-group="cam" data-panel="tps" style="margin-top:14px">
+            <h3>Third-person (default)</h3>
+            <ul class="bullets small">
+              <li>Camera over the right shoulder, pulled back on a spring arm so it never clips through walls</li>
+              <li>Hold <kbd>Right mouse</kbd> to aim: the camera zooms in tighter and accuracy improves</li>
+              <li><kbd>Q</kbd> swaps the camera to the other shoulder, useful when peeking around corners</li>
+              <li>You see your whole plastic soldier, which makes the toy look really stand out</li>
+            </ul>
+          </div>
+          <div class="tab-panel" data-group="cam" data-panel="fps" style="margin-top:14px">
+            <h3>First-person</h3>
+            <ul class="bullets small">
+              <li>Camera at eye level, with your arms and rifle visible</li>
+              <li>Hold <kbd>Right mouse</kbd> to aim down the sights</li>
+              <li>Same stats in both modes: switching view never makes you stronger or weaker</li>
+              <li>In vehicles: FPS puts you in the driver's seat or the tank commander's hatch</li>
+            </ul>
+          </div>
+          <div class="hr"></div>
+          <p class="small"><b>Switch:</b> press <kbd>V</kbd> at any time <span class="pill warn">PROPOSED KEY</span>. The camera blends between the two positions in about 0.25 s instead of cutting.</p>
+          <p class="small muted">Your last-used view is remembered separately for on-foot and vehicle play.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROLS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">03</span><h2>Controls (keyboard + mouse)</h2><span class="pill warn">PROPOSED LAYOUT</span></div>
+      <div class="card reveal">
+        <div class="flex" style="justify-content:space-between">
+          <div class="seg" data-tabs="ctl"><button data-tab="foot">On foot</button><button data-tab="jeep">Jeep</button><button data-tab="tank">Tank</button></div>
+          <span class="small muted">Hover or tap a highlighted key to see what it does</span>
+        </div>
+        <div class="spacer"></div>
+        <div class="grid" style="grid-template-columns: minmax(0,1.6fr) minmax(0,1fr); gap:20px" id="ctlGrid">
+          <div style="overflow-x:auto"><div class="kbd-board" id="kbd"></div></div>
+          <div>
+            <div class="dossier" style="padding:16px">
+              <div id="keyInfo" class="typed" style="min-height:52px">Pick a key…</div>
+            </div>
+            <div class="spacer"></div>
+            <table class="small" id="ctlTable"></table>
+          </div>
+        </div>
+        <p class="small muted" style="margin-top:12px">All keys will be rebindable in a settings menu later (Phase 2). Mac note: we avoid <kbd>Cmd</kbd> combinations so macOS shortcuts don't interrupt play.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMBAT TUNING -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">04</span><h2>Combat: the "middle ground" in numbers</h2><span class="pill warn">PROPOSED · TUNABLE</span></div>
+      <p class="muted">You asked for arcade pace where cover still matters. Here's my starting point. All values live in one config file so we can tune them after you play.</p>
+      <div class="grid g3">
+        <div class="card reveal stats"><span class="tag">GREEN · YOU</span>
+          <h3>Player soldier</h3>
+          <div class="stat"><span>Health</span><span class="bar"><i data-w="100"></i></span><span>100</span></div>
+          <div class="stat"><span>Run speed</span><span class="bar"><i data-w="70"></i></span><span>6 m/s</span></div>
+          <div class="stat"><span>Sprint</span><span class="bar"><i data-w="95"></i></span><span>8.5</span></div>
+          <p class="small muted" style="margin-top:8px">Health model: <b>medkit pickups + a small regen</b> (regenerates up to 30 HP after 5 s without damage). See Orders Q3.</p>
+        </div>
+        <div class="card reveal stats"><span class="tag tan">TAN · ENEMY</span>
+          <h3>Tan rifleman</h3>
+          <div class="stat"><span>Health</span><span class="bar tan"><i data-w="60"></i></span><span>60</span></div>
+          <div class="stat"><span>Accuracy</span><span class="bar tan"><i data-w="45"></i></span><span>low</span></div>
+          <div class="stat"><span>Reaction</span><span class="bar tan"><i data-w="55"></i></span><span>0.6 s</span></div>
+          <p class="small muted" style="margin-top:8px">Dies to about 3 body shots or 2 headshots. Their missed shots hit the cover near you so you can tell where fire is coming from.</p>
+        </div>
+        <div class="card reveal"><span class="tag">COVER</span>
+          <h3>Why cover matters</h3>
+          <ul class="bullets small">
+            <li>Standing in the open against 3+ Tan soldiers kills you in about 4 s</li>
+            <li>Crouching behind cover blocks about 80% of incoming fire</li>
+            <li>Grenades flush enemies out of cover. Tan soldiers throw them too.</li>
+            <li>Soft cover (cardboard, cereal boxes) breaks down. Hard cover (mugs, table legs) doesn't.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+      <h3 style="margin-top:10px">Prototype arsenal</h3>
+      <div class="grid g3">
+        <div class="card reveal stats"><span class="tag">SLOT 1</span>
+          <h3>M16 rifle</h3>
+          <div class="stat"><span>Damage</span><span class="bar"><i data-w="40"></i></span><span>22</span></div>
+          <div class="stat"><span>Fire rate</span><span class="bar"><i data-w="75"></i></span><span>600</span></div>
+          <div class="stat"><span>Range</span><span class="bar"><i data-w="65"></i></span><span>mid</span></div>
+          <p class="small muted">30-round mag, reload <kbd>R</kbd>. Hitscan bullets with visible tracers.</p>
+        </div>
+        <div class="card reveal stats"><span class="tag">SLOT 2</span>
+          <h3>Grenade</h3>
+          <div class="stat"><span>Damage</span><span class="bar"><i data-w="90"></i></span><span>100</span></div>
+          <div class="stat"><span>Radius</span><span class="bar"><i data-w="50"></i></span><span>4 m</span></div>
+          <div class="stat"><span>Carry</span><span class="bar"><i data-w="30"></i></span><span>3</span></div>
+          <p class="small muted">Hold <kbd>G</kbd> to show the throw arc, release to throw. Bounces off objects. 3-second fuse.</p>
+        </div>
+        <div class="card reveal stats" style="border-style:dashed"><span class="tag red">OPEN QUESTION</span>
+          <h3>Bazooka?</h3>
+          <div class="stat"><span>Damage</span><span class="bar"><i data-w="100"></i></span><span>150</span></div>
+          <div class="stat"><span>Fire rate</span><span class="bar"><i data-w="10"></i></span><span>slow</span></div>
+          <div class="stat"><span>Ammo</span><span class="bar"><i data-w="20"></i></span><span>4</span></div>
+          <p class="small muted">Only needed if Tan forces also have a tank in the prototype. See Orders Q4.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENEMY AI -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">05</span><h2>Tan soldier AI</h2></div>
+      <div class="grid" style="grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)" id="aiGrid">
+        <div class="svg-frame reveal" role="img" aria-label="Enemy AI state machine: Patrol, Alert, Engage, Take cover, Flank, Dead">
+          <svg viewBox="0 0 560 300" width="100%" id="aiSvg">
+            <defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#cfab6c"/></marker></defs>
+            <g stroke="#cfab6c" stroke-width="2" fill="none" marker-end="url(#ar2)" opacity=".85">
+              <path d="M130 70 H200"/>
+              <path d="M330 70 H400"/>
+              <path d="M460 100 C 480 150, 470 180, 440 200"/>
+              <path d="M360 215 H300"/>
+              <path d="M240 190 C 240 150, 300 120, 420 100"/>
+              <path d="M210 200 C 150 200, 110 140, 80 100" stroke-dasharray="5 5"/>
+            </g>
+            <g font-family="Black Ops One" font-size="15" text-anchor="middle" class="ai-states">
+              <g class="hotspot" data-ai="patrol"><rect class="hs-ring" x="20" y="45" width="110" height="50" rx="10" fill="#27311e" stroke="#9c7a3e" stroke-width="2"/><text x="75" y="76" fill="#e7ead9">PATROL</text></g>
+              <g class="hotspot" data-ai="alert"><rect class="hs-ring" x="200" y="45" width="130" height="50" rx="10" fill="#27311e" stroke="#9c7a3e" stroke-width="2"/><text x="265" y="76" fill="#e7ead9">ALERT</text></g>
+              <g class="hotspot" data-ai="engage"><rect class="hs-ring" x="400" y="45" width="130" height="50" rx="10" fill="#3a2f1b" stroke="#cfab6c" stroke-width="2"/><text x="465" y="76" fill="#e7ead9">ENGAGE</text></g>
+              <g class="hotspot" data-ai="cover"><rect class="hs-ring" x="360" y="190" width="150" height="50" rx="10" fill="#27311e" stroke="#9c7a3e" stroke-width="2"/><text x="435" y="221" fill="#e7ead9">TAKE COVER</text></g>
+              <g class="hotspot" data-ai="flank"><rect class="hs-ring" x="180" y="190" width="120" height="50" rx="10" fill="#27311e" stroke="#9c7a3e" stroke-width="2"/><text x="240" y="221" fill="#e7ead9">FLANK</text></g>
+            </g>
+            <text x="20" y="285" font-family="Special Elite" font-size="12" fill="#a9b092">Dashed: lost sight of the player for 10 s → return to patrol. Click a state.</text>
+          </svg>
+        </div>
+        <div class="dossier reveal" style="padding:18px">
+          <h3 id="aiTitle">Click a state</h3>
+          <p id="aiText" class="small">Each Tan soldier runs this simple state machine. It's easy to tune, and squad tactics can be added later.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VEHICLES -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">06</span><h2>Vehicles</h2></div>
+      <div class="grid g2">
+        <div class="card reveal stats"><span class="tag">VEHICLE 1</span>
+          <h3>Jeep: fast and fragile</h3>
+          <div class="stat"><span>Top speed</span><span class="bar"><i data-w="90"></i></span><span>fast</span></div>
+          <div class="stat"><span>Armor</span><span class="bar"><i data-w="30"></i></span><span>300</span></div>
+          <div class="stat"><span>Firepower</span><span class="bar"><i data-w="25"></i></span><span>none*</span></div>
+          <ul class="bullets small" style="margin-top:10px">
+            <li>Real wheel physics (suspension, drifting on smooth kitchen tiles)</li>
+            <li>Ramps off cookbooks, jumps over spilled cereal</li>
+            <li>*The prototype jeep is for transport only. A mounted gun needs a gunner, which comes with squadmates in Phase 2.</li>
+          </ul>
+        </div>
+        <div class="card reveal stats"><span class="tag">VEHICLE 2</span>
+          <h3>Tank: slow and decisive</h3>
+          <div class="stat"><span>Top speed</span><span class="bar"><i data-w="35"></i></span><span>slow</span></div>
+          <div class="stat"><span>Armor</span><span class="bar"><i data-w="95"></i></span><span>1500</span></div>
+          <div class="stat"><span>Firepower</span><span class="bar"><i data-w="95"></i></span><span>cannon</span></div>
+          <ul class="bullets small" style="margin-top:10px">
+            <li>Tracks: <kbd>W</kbd>/<kbd>S</kbd> drive, <kbd>A</kbd>/<kbd>D</kbd> turn the hull. The mouse aims the turret separately.</li>
+            <li>Main cannon (3 s reload) blasts through soft cover like cereal boxes</li>
+            <li>Coaxial machine gun on <kbd>Right mouse</kbd></li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout"><b>Enter / exit:</b> walk up to a vehicle and press <kbd>E</kbd>. Exiting puts you beside it. If a vehicle is destroyed while you're inside, you're thrown out with heavy damage. Arcade style, not instant death. <span class="pill warn">PROPOSED</span></div>
+    </div>
+  </section>
+</main>
+
+<div id="pager"></div>
+<footer id="foot"></footer>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  // ---------- Camera demo ----------
+  var rig = document.getElementById("camRig"), cone = document.getElementById("camCone");
+  var lbl = document.getElementById("camLabel"), sub = document.getElementById("camSub");
+  document.querySelector('[data-tabs="cam"]').addEventListener("tabchange", function (e) {
+    var fps = e.detail === "fps";
+    rig.setAttribute("transform", fps ? "translate(242 113)" : "translate(150 85)");
+    cone.setAttribute("d", fps ? "M0 0 L150 -45 L150 45 Z" : "M0 0 L250 -40 L250 70 Z");
+    lbl.textContent = fps ? "FIRST-PERSON" : "THIRD-PERSON";
+    sub.textContent = fps ? "camera at the soldier's eyes · precise aim" : "over the right shoulder · see your soldier and surroundings";
+  });
+
+  // ---------- Keyboard map ----------
+  var LAYOUT = [
+    ["Esc", "1", "2", "3", "4", "5"],
+    ["Tab:w2", "Q", "W", "E", "R", "T"],
+    ["Caps:w2", "A", "S", "D", "F", "G"],
+    ["Shift:w3", "Z", "X", "C", "V", "B"],
+    ["Ctrl:w2", "Space:space"]
+  ];
+  var BINDS = {
+    foot: {
+      W: "Move forward", A: "Strafe left", S: "Move back", D: "Strafe right",
+      Shift: "Sprint (hold)", Ctrl: "Crouch (toggle)", Space: "Jump", C: "Prone (toggle)",
+      R: "Reload", G: "Grenade: hold to aim arc, release to throw", E: "Enter vehicle / interact",
+      V: "Switch third-person ⇄ first-person", Q: "Swap shoulder (third-person)",
+      "1": "Rifle", "2": "Grenade slot", Tab: "Objectives / mission info", Esc: "Pause menu",
+      "LMB": "Fire", "RMB": "Aim / aim down sights", "Mouse": "Look / aim", "Wheel": "Cycle weapons"
+    },
+    jeep: {
+      W: "Accelerate", S: "Brake / reverse", A: "Steer left", D: "Steer right",
+      Space: "Handbrake (drift)", Shift: "Boost (short burst)", E: "Exit vehicle", V: "Switch chase cam ⇄ driver seat",
+      Esc: "Pause menu", Tab: "Objectives / mission info",
+      "Mouse": "Look around (camera orbits)", "LMB": "Horn (just for fun)", "RMB": "—", "Wheel": "Zoom chase cam"
+    },
+    tank: {
+      W: "Drive forward", S: "Reverse", A: "Rotate hull left", D: "Rotate hull right",
+      E: "Exit vehicle", V: "Switch chase cam ⇄ commander's hatch", Shift: "Zoomed gunner sight (hold)",
+      Esc: "Pause menu", Tab: "Objectives / mission info",
+      "Mouse": "Aim turret (independent of hull)", "LMB": "Fire main cannon", "RMB": "Coaxial machine gun", "Wheel": "Zoom"
+    }
+  };
+  var board = document.getElementById("kbd"), info = document.getElementById("keyInfo"), table = document.getElementById("ctlTable");
+  var mode = "foot";
+  function render() {
+    var b = BINDS[mode];
+    board.innerHTML = LAYOUT.map(function (row) {
+      return '<div class="kbd-row">' + row.map(function (k) {
+        var p = k.split(":"), name = p[0], cls = p[1] || "";
+        var bound = b[name] ? " bound" + (name === "V" ? " alt" : "") : "";
+        return '<div class="key ' + cls + bound + '" tabindex="' + (bound ? 0 : -1) + '" data-k="' + name + '">' + name + "</div>";
+      }).join("") + "</div>";
+    }).join("");
+    table.innerHTML = "<tr><th>Mouse</th><th></th></tr>" + ["Mouse", "LMB", "RMB", "Wheel"].map(function (m) {
+      return "<tr><td><kbd>" + (m === "LMB" ? "Left click" : m === "RMB" ? "Right click" : m) + "</kbd></td><td>" + (b[m] || "—") + "</td></tr>";
+    }).join("");
+    info.textContent = "Hover or tap a green key…";
+  }
+  function show(el) {
+    board.querySelectorAll(".key.hot").forEach(function (k) { k.classList.remove("hot"); });
+    var k = el.dataset.k, t = BINDS[mode][k];
+    if (!t) return;
+    el.classList.add("hot");
+    info.innerHTML = "<b>" + k + "</b> — " + t;
+  }
+  board.addEventListener("mouseover", function (e) { var k = e.target.closest(".key.bound"); if (k) show(k); });
+  board.addEventListener("click", function (e) { var k = e.target.closest(".key.bound"); if (k) show(k); });
+  board.addEventListener("focusin", function (e) { var k = e.target.closest(".key.bound"); if (k) show(k); });
+  document.querySelector('[data-tabs="ctl"]').addEventListener("tabchange", function (e) { mode = e.detail; render(); });
+  render();
+  var grid = document.getElementById("ctlGrid"), ai = document.getElementById("aiGrid");
+  function relayout() {
+    var narrow = window.innerWidth < 860;
+    grid.style.gridTemplateColumns = narrow ? "1fr" : "minmax(0,1.6fr) minmax(0,1fr)";
+    ai.style.gridTemplateColumns = narrow ? "1fr" : "minmax(0,1.4fr) minmax(0,1fr)";
+  }
+  window.addEventListener("resize", relayout); relayout();
+
+  // ---------- AI states ----------
+  var AI = {
+    patrol: ["Patrol", "Walks a route set in the level editor between waypoints, or stands guard. Has a forward view cone of about 90° and hears gunshots within roughly 25 m."],
+    alert: ["Alert", "Heard or glimpsed something. Turns toward it, shouts so nearby Tan soldiers also go on alert, and moves to investigate. If it confirms the player is there, it switches to Engage."],
+    engage: ["Engage", "Shoots in bursts. Accuracy starts low and improves the longer you stay exposed, which is the main reward for using cover. Throws a grenade if you stay behind the same cover for more than about 6 s."],
+    cover: ["Take cover", "When hurt or under heavy fire, finds the nearest cover point (placed in the level) that blocks your line of sight, then peeks out and fires."],
+    flank: ["Flank", "If 2+ Tan soldiers are engaging you, one of them may circle around to a cover point at your side. A sound cue warns you. This is what makes cover matter without making the game feel unfair."]
+  };
+  var title = document.getElementById("aiTitle"), text = document.getElementById("aiText");
+  document.querySelectorAll("[data-ai]").forEach(function (g) {
+    g.addEventListener("click", function () {
+      document.querySelectorAll("[data-ai]").forEach(function (x) { x.classList.remove("on"); });
+      g.classList.add("on");
+      var d = AI[g.dataset.ai]; title.textContent = d[0]; text.textContent = d[1];
+    });
+  });
+})();
+</script>
+</body>
+</html>

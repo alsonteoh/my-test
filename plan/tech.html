@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plastic War — Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Black+Ops+One&family=Special+Elite&family=Stardos+Stencil:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .tree { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 14px; line-height: 1.75; }
+  .tree details { margin-left: 16px; }
+  .tree > details { margin-left: 0; }
+  .tree summary { cursor: pointer; color: var(--green-hi); list-style: none; }
+  .tree summary::-webkit-details-marker { display: none; }
+  .tree summary::before { content: "▸ "; color: var(--tan); }
+  .tree details[open] > summary::before { content: "▾ "; }
+  .tree .f { margin-left: 32px; color: var(--text); }
+  .tree .f em { color: var(--muted); font-style: normal; font-family: var(--font-body); font-size: 13px; margin-left: 8px; }
+  .slider-row { display: grid; grid-template-columns: 120px 1fr 44px; gap: 10px; align-items: center; margin: 8px 0; font-size: 14px; }
+  .slider-row input { accent-color: var(--green); width: 100%; }
+  .node { cursor: pointer; }
+  .node:hover rect, .node.on rect { stroke: #e0b341; stroke-width: 3; }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main>
+  <section class="hero" style="padding-bottom:10px">
+    <div class="wrap">
+      <div class="kicker">FM-03 // Engineering & logistics</div>
+      <h1>Engine <span class="g">Room</span></h1>
+      <p class="lead" style="margin-top:12px">How the game is put together in Godot 4 on your Apple Silicon Mac, where the 3D art comes from, and how we work together when I can't run the game myself.</p>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">01</span><h2>The tech stack</h2></div>
+      <div class="grid g4">
+        <div class="card reveal"><span class="tag">ENGINE</span><h3>Godot 4</h3><p class="small">Latest stable 4.x, the <b>standard</b> edition (not the .NET/C# one). Free and open source, with a native Apple Silicon build.</p></div>
+        <div class="card reveal"><span class="tag">LANGUAGE</span><h3>GDScript</h3><p class="small">Godot's own Python-like language. Easiest for you to read, no extra installs, and fast enough for this game.</p></div>
+        <div class="card reveal"><span class="tag">RENDERER</span><h3>Forward+ on Metal</h3><p class="small">Godot's highest-quality renderer: real-time shadows, global illumination (SDFGI), volumetric fog, glossy reflections.</p></div>
+        <div class="card reveal"><span class="tag">PHYSICS</span><h3>Jolt</h3><p class="small">The physics engine built into Godot 4.4+. More stable for vehicles and lots of physics debris than the default engine.</p></div>
+      </div>
+      <div class="callout green small"><b>Target performance:</b> 60 fps at 1080p on a base M1 MacBook Air with "High" settings. Higher-end M-series chips get the "Ultra" preset (more shadows, GI, fog). <span class="pill warn">PROPOSED</span></div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">02</span><h2>Architecture: how the pieces connect</h2></div>
+      <p class="muted">Godot builds games from <b>scenes</b> (reusable building blocks) made of <b>nodes</b>. Click any block for a plain-English explanation.</p>
+      <div class="grid" style="grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)" id="archGrid">
+        <div class="svg-frame reveal">
+          <svg viewBox="0 0 640 400" width="100%" id="arch" role="img" aria-label="Architecture diagram: Game Director at top manages Kitchen Level, Player, Tan soldiers, Vehicles and HUD; shared components Health, Weapon and Damage; autoload services Config, Audio, Input">
+            <g stroke="#45522f" stroke-width="2" fill="none">
+              <path d="M320 64 V90 M80 90 H560 M80 90 V112 M200 90 V112 M320 90 V112 M440 90 V112 M560 90 V112"/>
+              <path d="M200 162 V230 M320 162 V230 M440 162 V230" stroke-dasharray="5 5"/>
+              <path d="M140 230 H500"/>
+            </g>
+            <g font-family="Black Ops One" font-size="14" text-anchor="middle"></g>
+          </svg>
+          <p class="caption" style="padding:0 12px 10px">Solid lines: "contains". Dashed lines: "uses". The services along the bottom are available to everything.</p>
+        </div>
+        <div class="dossier reveal side-panel" style="padding:18px">
+          <span class="pill tan" id="arKind">SCENE</span>
+          <h3 id="arTitle" style="margin-top:8px">Click a block</h3>
+          <p id="arText" class="small">Each block becomes a scene file (<code>.tscn</code>) and a script file (<code>.gd</code>) in the project.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLASTIC LOOK -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">03</span><h2>The plastic look</h2></div>
+      <div class="grid g2">
+        <div class="card reveal">
+          <h3>Material preview</h3>
+          <p class="small muted">A rough stand-in for the real shader. Move the sliders to see what each setting does.</p>
+          <div class="grid g2" style="align-items:center">
+            <svg viewBox="0 0 200 240" width="100%" role="img" aria-label="Plastic soldier material preview">
+              <defs>
+                <linearGradient id="body" x1="0" x2="1">
+                  <stop offset="0" id="s0"/><stop offset=".5" id="s1"/><stop offset="1" id="s2"/>
+                </linearGradient>
+                <radialGradient id="spec" cx=".35" cy=".3" r=".5"><stop offset="0" stop-color="#fff" id="specStop"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+                <filter id="sss"><feGaussianBlur stdDeviation="0" id="sssBlur"/></filter>
+              </defs>
+              <rect width="200" height="240" fill="#10150c"/>
+              <g filter="url(#sss)" id="toy">
+                <ellipse cx="100" cy="212" rx="60" ry="10" fill="url(#body)"/>
+                <path d="M85 80h30l8 70h-46z" fill="url(#body)"/>
+                <path d="M85 150l-8 60h16l7-40 7 40h16l-8-60z" fill="url(#body)"/>
+                <circle cx="100" cy="60" r="18" fill="url(#body)"/>
+                <path d="M80 56q20-30 40 0z" fill="url(#body)"/>
+                <rect x="104" y="96" width="70" height="8" rx="3" fill="url(#body)"/>
+              </g>
+              <ellipse cx="94" cy="56" rx="7" ry="5" fill="url(#spec)" id="hl1"/>
+              <ellipse cx="94" cy="110" rx="6" ry="20" fill="url(#spec)" id="hl2"/>
+              <path d="M100 42 V230" stroke="#000" stroke-opacity=".0" id="seam" stroke-width="1"/>
+            </svg>
+            <div>
+              <div class="slider-row"><span>Color</span><select id="col" style="background:var(--panel-2);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px"><option value="green">Green</option><option value="tan">Tan</option><option value="grey">Grey</option><option value="blue">Blue</option></select><span></span></div>
+              <div class="slider-row"><span>Gloss</span><input type="range" id="gloss" min="0" max="100" value="65"><span id="glossV">65</span></div>
+              <div class="slider-row"><span>Light bleed</span><input type="range" id="sssR" min="0" max="100" value="30"><span id="sssV">30</span></div>
+              <div class="slider-row"><span>Mold seam</span><input type="range" id="seamR" min="0" max="100" value="35"><span id="seamV">35</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card reveal">
+          <h3>What the real shader does</h3>
+          <ul class="bullets small">
+            <li><b>Glossy clear coat</b>: that cheap injection-molded shine, with sharp highlights</li>
+            <li><b>Subsurface scattering</b>: light glows slightly through thin parts like the helmet brim, the way real soft plastic does</li>
+            <li><b>Mold seams and flash</b>: a faint line down the sides of each soldier, added with a texture</li>
+            <li><b>Scuffs</b>: soldiers wear and get scratched as they take damage</li>
+            <li><b>Melt</b> (Phase 2, flamethrower): the soldier sags, drips and darkens</li>
+          </ul>
+          <div class="callout small"><b>One material, every model.</b> CC0 models come in different art styles. Putting the same plastic material on all of them makes them look like they belong together, and makes them read as toys.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASSETS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">04</span><h2>Asset supply: free CC0 sources</h2></div>
+      <p class="muted">CC0 means public domain: free to use and modify, no credit required. I'll still keep a <code>CREDITS.md</code> listing every asset and its source, as good practice.</p>
+      <div class="card reveal">
+        <div class="table-scroll">
+        <table>
+          <thead><tr><th>Need</th><th>Candidate sources</th><th>Plan</th></tr></thead>
+          <tbody>
+            <tr><td>Soldier body + animations</td><td>Quaternius (rigged, animated CC0 characters), Kenney character kits</td><td>One rigged human with run, crouch, aim and death animations, then the plastic material on top. Helmet and webbing added as extra pieces.</td></tr>
+            <tr><td>Rifle, grenade</td><td>Kenney Blaster Kit, Quaternius weapon packs</td><td>Pick shapes close to an M16 and a pineapple grenade</td></tr>
+            <tr><td>Jeep, tank</td><td>Quaternius / Kenney vehicle packs, Poly Pizza</td><td>If no good CC0 military jeep or tank turns up, I build a clean blocky one from shapes in code. Toy army vehicles are blocky anyway.</td></tr>
+            <tr><td>Kitchen furniture</td><td>Kenney Furniture Kit, Poly Pizza</td><td>Table, chairs, counters, fridge, oven, scaled 36×</td></tr>
+            <tr><td>Food & props</td><td>Kenney Food Kit, Poly Pizza</td><td>Cereal boxes, mugs, cookbooks, dog bowl</td></tr>
+            <tr><td>Surface textures</td><td>ambientCG, Poly Haven (both CC0)</td><td>Tiles, wood, cardboard, at high resolution so they hold up at giant scale</td></tr>
+            <tr><td>Sound effects</td><td>Kenney audio packs, Freesound (CC0 filter only)</td><td>Plastic clacks on impact, gunfire, engines, Tan radio chatter</td></tr>
+            <tr><td>Music</td><td>CC0 military marches/drums on OpenGameArt</td><td>One menu theme and one combat loop</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="small muted" style="margin-top:10px">Poly Pizza and OpenGameArt host a mix of licenses, so I'll only use items explicitly marked CC0. You'll need to download the asset packs on your Mac and drop them into the project folder (instructions in <a href="bootcamp.html">Boot Camp</a>), because this cloud environment may not be able to reach those sites.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECT LAYOUT -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">05</span><h2>Project folder layout</h2></div>
+      <div class="grid g2">
+        <div class="card tree reveal">
+          <details open><summary>game/</summary>
+            <div class="f">project.godot <em>open this in Godot</em></div>
+            <details><summary>assets/</summary>
+              <div class="f">models/ <em>CC0 .glb files</em></div><div class="f">textures/</div><div class="f">audio/</div><div class="f">CREDITS.md <em>every asset + source</em></div>
+            </details>
+            <details open><summary>scenes/</summary>
+              <div class="f">player/ <em>soldier, camera rig</em></div><div class="f">enemies/ <em>Tan rifleman</em></div><div class="f">vehicles/ <em>jeep, tank</em></div>
+              <div class="f">weapons/ <em>rifle, grenade</em></div><div class="f">levels/ <em>kitchen.tscn</em></div><div class="f">ui/ <em>HUD, menus</em></div>
+            </details>
+            <details><summary>scripts/</summary>
+              <div class="f">components/ <em>health, damage, interact</em></div><div class="f">ai/ <em>state machine, perception</em></div><div class="f">autoload/ <em>config, audio, game state</em></div>
+            </details>
+            <details><summary>data/</summary>
+              <div class="f">tuning.tres <em>all combat numbers in one place</em></div><div class="f">weapons/*.tres</div>
+            </details>
+            <details><summary>tests/</summary><div class="f">smoke tests <em>run headless</em></div></details>
+          </details>
+          <details><summary>plan/</summary><div class="f">these HTML pages</div></details>
+        </div>
+        <div class="card reveal">
+          <h3>Why it's laid out like this</h3>
+          <ul class="bullets small">
+            <li><b>Swap art without touching code:</b> art lives in <code>assets/</code>, behaviour lives in <code>scripts/</code>. Upgrading a model means replacing one file.</li>
+            <li><b>One tuning file:</b> health, damage, speeds and AI timings are all in <code>data/tuning.tres</code>. You can tweak numbers in Godot's Inspector without reading any code.</li>
+            <li><b>Components:</b> "Health" is written once and used by soldiers, vehicles and cereal boxes alike.</li>
+            <li><b>Built for growth:</b> squads, new weapons and new levels slot into the same structure later.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">06</span><h2>How we work together</h2></div>
+      <div class="svg-frame reveal" role="img" aria-label="Workflow loop: Claude writes code and pushes to GitHub; you pull with GitHub Desktop; you play in Godot on your Mac; you send feedback; repeat">
+        <svg viewBox="0 0 900 190" width="100%">
+          <defs><marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#9cc552"/></marker></defs>
+          <g font-family="Black Ops One" font-size="15" text-anchor="middle">
+            <rect x="20" y="50" width="180" height="76" rx="12" fill="#27311e" stroke="#5f8a2b" stroke-width="2"/><text x="110" y="82" fill="#e7ead9">1 · I BUILD</text><text x="110" y="104" font-family="Barlow" font-size="12.5" fill="#a9b092">write code, run checks, push</text>
+            <rect x="245" y="50" width="180" height="76" rx="12" fill="#27311e" stroke="#5f8a2b" stroke-width="2"/><text x="335" y="82" fill="#e7ead9">2 · YOU PULL</text><text x="335" y="104" font-family="Barlow" font-size="12.5" fill="#a9b092">GitHub Desktop → "Fetch"</text>
+            <rect x="470" y="50" width="180" height="76" rx="12" fill="#27311e" stroke="#cfab6c" stroke-width="2"/><text x="560" y="82" fill="#e7ead9">3 · YOU PLAY</text><text x="560" y="104" font-family="Barlow" font-size="12.5" fill="#a9b092">Godot on your Mac → F5</text>
+            <rect x="695" y="50" width="185" height="76" rx="12" fill="#3d5c19" stroke="#9cc552" stroke-width="2"/><text x="787" y="82" fill="#e7ead9">4 · YOU REPORT</text><text x="787" y="104" font-family="Barlow" font-size="12.5" fill="#d7e6b8">feel, bugs, screenshots</text>
+          </g>
+          <g stroke="#9cc552" stroke-width="2.5" fill="none" marker-end="url(#ar3)"><path d="M200 88H243"/><path d="M425 88H468"/><path d="M650 88H693"/><path d="M787 126 V165 H110 V128" stroke-dasharray="6 6"/></g>
+        </svg>
+      </div>
+      <div class="grid g2" style="margin-top:18px">
+        <div class="card reveal">
+          <h3>What I can check before you play</h3>
+          <ul class="bullets small">
+            <li>Every script carefully reviewed against the Godot 4 API</li>
+            <li>A game-logic simulation (damage, AI decisions) that I can test in code</li>
+            <li><b>If Godot can be downloaded here:</b> I run the project headless to catch script errors and run automated smoke tests before every push</li>
+          </ul>
+          <div class="callout red small"><b>Right now:</b> this cloud environment's network policy blocks the download of Godot from <code>github.com</code> release files. If you want me to test-run code here, you can allow that host in the environment's network settings (more on the Orders page, Q11). Without it, you are the only one who can test-run the game.</div>
+        </div>
+        <div class="card reveal">
+          <h3>What only you can check</h3>
+          <ul class="bullets small">
+            <li>Does it <b>feel</b> good? Aiming, movement, vehicle handling</li>
+            <li>Does it look right on your screen?</li>
+            <li>Performance on your actual Mac. I'll add an on-screen FPS counter (<kbd>F3</kbd>).</li>
+            <li>When something breaks: Godot's red error text at the bottom of the editor. Copy and paste it to me.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="pager"></div>
+<footer id="foot"></footer>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  // ---------- Architecture diagram ----------
+  var NODES = [
+    { id: "dir", x: 240, y: 16, w: 160, h: 48, label: "GAME DIRECTOR", kind: "SCENE · ROOT", fill: "#3d5c19",
+      d: "The mission controller. Starts the level, keeps track of the objective (destroy the radio), triggers Tan reinforcements every 60 s, and shows win/lose. Think of it as the referee." },
+    { id: "lvl", x: 20, y: 112, w: 120, h: 50, label: "KITCHEN", kind: "SCENE · LEVEL",
+      d: "The 3D kitchen: scaled-up furniture, lighting, cover points for the AI, patrol routes, and a navigation mesh (an invisible map of where soldiers can walk)." },
+    { id: "ply", x: 140, y: 112, w: 120, h: 50, label: "PLAYER", kind: "SCENE · CHARACTER",
+      d: "Your soldier: a CharacterBody3D (Godot's node for characters you walk around) plus the camera rig with both TPS and FPS cameras, the weapon holder, and the 'interact' detector used for getting into vehicles." },
+    { id: "tan", x: 260, y: 112, w: 120, h: 50, label: "TAN SOLDIER", kind: "SCENE · CHARACTER",
+      d: "Same kind of character body as the player, but with an AI brain: perception (sight and hearing), the state machine from the Field Manual, and a NavigationAgent3D for pathfinding around obstacles." },
+    { id: "veh", x: 380, y: 112, w: 120, h: 50, label: "VEHICLES", kind: "SCENE · PHYSICS",
+      d: "The jeep uses Godot's built-in VehicleBody3D with four wheels and real suspension. The tank uses a custom tracked-vehicle script on a rigid body, plus a separately rotating turret. Both have a 'seat' that hands your controls over to the vehicle." },
+    { id: "hud", x: 500, y: 112, w: 120, h: 50, label: "HUD", kind: "SCENE · UI",
+      d: "On-screen display: health, ammo, grenades, crosshair, hit markers, damage direction arrows, objective text, vehicle armor. Military-stencil style." },
+    { id: "cmp", x: 140, y: 230, w: 360, h: 50, label: "SHARED COMPONENTS: Health · Weapon · Damage · Interact", kind: "SCRIPTS · REUSABLE",
+      d: "Small reusable pieces that can be attached to anything. 'Health' works the same on a soldier, a jeep or a cereal box. 'Weapon' reads its stats (damage, fire rate, ammo) from a data file, so adding a new gun means adding a data file." },
+    { id: "cfg", x: 30, y: 320, w: 180, h: 50, label: "CONFIG / TUNING", kind: "AUTOLOAD · SERVICE",
+      d: "Loads data/tuning.tres: every combat number in one place. Also handles graphics settings and presets (High/Ultra)." },
+    { id: "aud", x: 230, y: 320, w: 180, h: 50, label: "AUDIO", kind: "AUTOLOAD · SERVICE",
+      d: "Plays sounds in 3D space, limits how many play at once so explosions don't get muddy, and fades music between calm and combat." },
+    { id: "inp", x: 430, y: 320, w: 180, h: 50, label: "INPUT & STATE", kind: "AUTOLOAD · SERVICE",
+      d: "Keyboard and mouse mapping (rebindable later), mouse sensitivity, pausing, and remembering your preferred camera view." }
+  ];
+  var svg = document.querySelector("#arch g[text-anchor]");
+  svg.innerHTML = NODES.map(function (n) {
+    var fs = n.w > 200 ? 12 : 13;
+    return '<g class="node" tabindex="0" data-id="' + n.id + '"><rect x="' + n.x + '" y="' + n.y + '" width="' + n.w + '" height="' + n.h +
+      '" rx="9" fill="' + (n.fill || (n.kind.indexOf("AUTOLOAD") === 0 ? "#2a2a1c" : "#27311e")) + '" stroke="' + (n.kind.indexOf("AUTOLOAD") === 0 ? "#9c7a3e" : "#5f8a2b") +
+      '" stroke-width="2"/><text x="' + (n.x + n.w / 2) + '" y="' + (n.y + n.h / 2 + 5) + '" fill="#e7ead9" font-size="' + fs + '">' + n.label + "</text></g>";
+  }).join("");
+  function pick(id) {
+    var n = NODES.find(function (x) { return x.id === id; });
+    document.querySelectorAll("#arch .node").forEach(function (g) { g.classList.toggle("on", g.dataset.id === id); });
+    document.getElementById("arKind").textContent = n.kind;
+    document.getElementById("arTitle").textContent = n.label.split(":")[0];
+    document.getElementById("arText").textContent = n.d;
+  }
+  svg.addEventListener("click", function (e) { var g = e.target.closest(".node"); if (g) pick(g.dataset.id); });
+  svg.addEventListener("keydown", function (e) { if (e.key === "Enter") { var g = e.target.closest(".node"); if (g) pick(g.dataset.id); } });
+
+  var grid = document.getElementById("archGrid");
+  function relayout() { grid.style.gridTemplateColumns = window.innerWidth < 860 ? "1fr" : "minmax(0,1.6fr) minmax(0,1fr)"; }
+  window.addEventListener("resize", relayout); relayout();
+
+  // ---------- Plastic preview ----------
+  var COLORS = { green: ["#2f4f12", "#7cb33a", "#2a4510"], tan: ["#7d5f2c", "#e0c085", "#6e5426"], grey: ["#4a4d50", "#a9aeb3", "#3d4043"], blue: ["#1f3a66", "#5f8fd6", "#1a3157"] };
+  var col = document.getElementById("col"), gloss = document.getElementById("gloss"), sss = document.getElementById("sssR"), seam = document.getElementById("seamR");
+  function upd() {
+    var c = COLORS[col.value];
+    document.getElementById("s0").setAttribute("stop-color", c[0]);
+    document.getElementById("s1").setAttribute("stop-color", c[1]);
+    document.getElementById("s2").setAttribute("stop-color", c[2]);
+    var gv = gloss.value / 100;
+    ["hl1", "hl2"].forEach(function (id) { document.getElementById(id).setAttribute("opacity", (gv * 0.95).toFixed(2)); });
+    document.getElementById("hl1").setAttribute("rx", (4 + (1 - gv) * 10).toFixed(1));
+    document.getElementById("sssBlur").setAttribute("stdDeviation", (sss.value / 100 * 1.6).toFixed(2));
+    document.getElementById("seam").setAttribute("stroke-opacity", (seam.value / 100 * 0.6).toFixed(2));
+    document.getElementById("glossV").textContent = gloss.value;
+    document.getElementById("sssV").textContent = sss.value;
+    document.getElementById("seamV").textContent = seam.value;
+  }
+  [col, gloss, sss, seam].forEach(function (el) { el.addEventListener("input", upd); });
+  upd();
+})();
+</script>
+</body>
+</html>

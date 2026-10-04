@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plastic War — Mission Briefing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Black+Ops+One&family=Special+Elite&family=Stardos+Stencil:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header id="topbar"></header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="kicker">Classified // Mission briefing // Draft 1 for review</div>
+        <h1><span class="g">PLASTIC</span> <span class="t">WAR</span></h1>
+        <p class="lead" style="margin-top:14px">
+          A modern 3D remake inspired by 3DO's <em>Army Men</em> series. You play a green plastic soldier fighting the Tan army
+          in giant real-world rooms and miniature battlefields, and you can switch between
+          <b>third-person</b> and <b>first-person</b> view at any time.
+        </p>
+        <div class="flex" style="margin-top:18px">
+          <a class="btn" href="gameplay.html" style="text-decoration:none">Read the field manual</a>
+          <a class="btn tan" href="orders.html" style="text-decoration:none">Give your orders →</a>
+        </div>
+        <p class="small muted" style="margin-top:14px">"Plastic War" is a <b>working title</b>. You can rename it on the <a href="orders.html">Orders</a> page.</p>
+      </div>
+
+      <!-- Animated standoff illustration -->
+      <div class="svg-frame" role="img" aria-label="Illustration: a green plastic soldier and a tan plastic soldier face off on a kitchen-tile floor">
+        <svg viewBox="0 0 420 300" width="100%">
+          <defs>
+            <pattern id="tile" width="60" height="60" patternUnits="userSpaceOnUse">
+              <rect width="60" height="60" fill="#d9d4c3"/><rect width="60" height="60" fill="none" stroke="#b5ae98" stroke-width="2"/>
+            </pattern>
+            <linearGradient id="gPl" x1="0" x2="1"><stop offset="0" stop-color="#4f7a1f"/><stop offset=".45" stop-color="#9cc552"/><stop offset="1" stop-color="#3d5c19"/></linearGradient>
+            <linearGradient id="tPl" x1="0" x2="1"><stop offset="0" stop-color="#9c7a3e"/><stop offset=".45" stop-color="#ead09a"/><stop offset="1" stop-color="#8a6a32"/></linearGradient>
+            <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4630"/><stop offset="1" stop-color="#232b1c"/></linearGradient>
+          </defs>
+          <rect width="420" height="170" fill="url(#wall)"/>
+          <!-- giant cereal box & mug in background -->
+          <rect x="250" y="30" width="80" height="150" fill="#b8452f" stroke="#7d2a1b" stroke-width="3"/>
+          <text x="290" y="80" text-anchor="middle" font-family="Black Ops One" font-size="16" fill="#f3d27a">CORN</text>
+          <text x="290" y="100" text-anchor="middle" font-family="Black Ops One" font-size="16" fill="#f3d27a">BOMBS</text>
+          <circle cx="290" cy="135" r="18" fill="#f3d27a" opacity=".8"/>
+          <rect x="40" y="90" width="70" height="90" rx="6" fill="#5b7f9e" stroke="#2f4a61" stroke-width="3"/>
+          <path d="M110 110 q28 0 28 25 q0 25 -28 25" fill="none" stroke="#2f4a61" stroke-width="8"/>
+          <!-- floor -->
+          <polygon points="0,170 420,170 420,300 0,300" fill="url(#tile)"/>
+          <ellipse cx="120" cy="268" rx="40" ry="8" fill="rgba(0,0,0,.25)"/>
+          <ellipse cx="320" cy="268" rx="40" ry="8" fill="rgba(0,0,0,.25)"/>
+          <!-- green soldier (kneeling rifleman) -->
+          <g id="greenSoldier" transform="translate(120 200)">
+            <g>
+              <animateTransform attributeName="transform" type="translate" values="0 0;0 -2;0 0" dur="2.4s" repeatCount="indefinite"/>
+              <rect x="-50" y="60" width="100" height="10" rx="3" fill="url(#gPl)"/>
+              <path d="M-8 -20 h18 l4 34 h-26z" fill="url(#gPl)" stroke="#2f4a12"/>
+              <path d="M-8 14 l-14 30 h12 l10 -18 z M6 14 l18 18 l-6 30 h10 l8 -34 l-16 -14z" fill="url(#gPl)" stroke="#2f4a12"/>
+              <circle cx="1" cy="-30" r="10" fill="url(#gPl)" stroke="#2f4a12"/>
+              <path d="M-12 -32 q13 -18 26 0 z" fill="#4f7a1f" stroke="#2f4a12"/>
+              <rect x="0" y="-16" width="62" height="6" rx="2" fill="#3d5c19"/>
+              <path d="M-4 -12 l26 0" stroke="#4f7a1f" stroke-width="8" stroke-linecap="round"/>
+            </g>
+          </g>
+          <!-- tan soldier -->
+          <g transform="translate(320 200) scale(-1 1)">
+            <g>
+              <animateTransform attributeName="transform" type="translate" values="0 0;0 -2;0 0" dur="2.1s" repeatCount="indefinite"/>
+              <rect x="-50" y="60" width="100" height="10" rx="3" fill="url(#tPl)"/>
+              <path d="M-8 -20 h18 l4 34 h-26z" fill="url(#tPl)" stroke="#6b5226"/>
+              <path d="M-8 14 l-6 46 h10 l4 -30 l4 30 h10 l-2 -46z" fill="url(#tPl)" stroke="#6b5226"/>
+              <circle cx="1" cy="-30" r="10" fill="url(#tPl)" stroke="#6b5226"/>
+              <path d="M-12 -32 q13 -18 26 0 z" fill="#b8955a" stroke="#6b5226"/>
+              <rect x="0" y="-16" width="56" height="6" rx="2" fill="#8a6a32"/>
+              <path d="M-4 -12 l24 0" stroke="#b8955a" stroke-width="8" stroke-linecap="round"/>
+            </g>
+          </g>
+          <!-- tracer -->
+          <line x1="186" y1="181" x2="200" y2="181" stroke="#ffd36b" stroke-width="3" stroke-linecap="round">
+            <animate attributeName="x1" values="186;250;186" dur="1.2s" repeatCount="indefinite"/>
+            <animate attributeName="x2" values="200;264;200" dur="1.2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="1;1;0" dur="1.2s" repeatCount="indefinite"/>
+          </line>
+          <text x="210" y="292" text-anchor="middle" font-family="Special Elite" font-size="12" fill="#5d5843">Scale: each soldier ≈ 5 cm of plastic</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEL RECEIVED -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">01</span><h2>Intel received: your answers</h2></div>
+      <p class="muted">Everything in this plan builds on these answers. Anything I've <b>proposed</b> beyond them is marked
+        <span class="pill warn">PROPOSED</span> and listed on the <a href="orders.html">Orders</a> page for you to approve.</p>
+      <div class="dossier has-tab reveal" data-tab="FILE 01 — CONFIRMED DECISIONS">
+        <span class="stamp green" style="position:absolute;right:24px;top:-22px;background:var(--paper)">CONFIRMED</span>
+        <div class="table-scroll">
+        <table>
+          <thead><tr><th style="width:28%">Topic</th><th>Your decision</th><th style="width:30%">What it means for the build</th></tr></thead>
+          <tbody>
+            <tr><td><b>Inspired by</b></td><td>Army Men / Army Men II, Army Men: RTS, Air Attack / Toys in Space. No isometric view; play in 3rd or 1st person instead.</td><td>Combat and missions follow the Army Men 1/2 style. Air Attack and RTS ideas come in later phases.</td></tr>
+            <tr><td><b>Overall structure</b></td><td>Shooter core + vehicles. Base building comes later.</td><td>The prototype has no RTS layer, just a shooter with drivable vehicles.</td></tr>
+            <tr><td><b>Camera</b></td><td>Switch between third-person (TPS) and first-person (FPS) at any time</td><td>One camera setup with two modes, smooth blend between them</td></tr>
+            <tr><td><b>Engine</b></td><td>Godot 4, on an Apple Silicon Mac (M1–M4)</td><td>Forward+ renderer on Metal, so we can push visual quality</td></tr>
+            <tr><td><b>Release</b></td><td>Private fan project</td><td>We can use Army Men-style names (Green vs Tan, Sarge)</td></tr>
+            <tr><td><b>First prototype</b></td><td>On-foot combat + Jeep + Tank</td><td>No squad commands and no base building yet</td></tr>
+            <tr><td><b>Prototype map</b></td><td>Kitchen / indoor</td><td>A giant kitchen with hard floors, which suits the vehicles</td></tr>
+            <tr><td><b>World long-term</b></td><td>Mix of battlefield dioramas and giant real-world rooms</td><td>Level tools must support both</td></tr>
+            <tr><td><b>Players</b></td><td>Single-player first</td><td>No networking code in the prototype</td></tr>
+            <tr><td><b>Combat feel</b></td><td>Middle ground: arcade pace, but cover and position matter</td><td>See the tuning numbers in the <a href="gameplay.html">Field Manual</a></td></tr>
+            <tr><td><b>3D art</b></td><td>Free CC0 asset packs</td><td>Re-skinned with a custom plastic material (see <a href="tech.html">Engineering</a>)</td></tr>
+            <tr><td><b>Controls</b></td><td>Keyboard + mouse</td><td>Gamepad support is not in the prototype</td></tr>
+            <tr><td><b>Your experience</b></td><td>New to Godot and to coding</td><td>Step-by-step <a href="bootcamp.html">Boot Camp</a> setup guide. I write all the code.</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLARS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">02</span><h2>The four design pillars</h2></div>
+      <p class="muted">Every feature has to support at least one of these. If it doesn't, it waits.</p>
+      <div class="grid g4">
+        <div class="card reveal"><span class="tag">PILLAR 1</span>
+          <h3>It's plastic</h3>
+          <p class="small">Soldiers look like toys: shiny molded plastic with faint mold seams. When killed they freeze into a stiff molded pose
+            and topple over. Flamethrowers (later) melt them.</p></div>
+        <div class="card reveal"><span class="tag">PILLAR 2</span>
+          <h3>Your view, your call</h3>
+          <p class="small">Over-the-shoulder TPS for awareness, FPS for precise aim. Switch instantly with one key, on foot or in a vehicle.</p></div>
+        <div class="card reveal"><span class="tag">PILLAR 3</span>
+          <h3>Ride into battle</h3>
+          <p class="small">Jump in a jeep to cover ground fast, or take a tank to break through. Vehicles change the fight instead of just moving you around.</p></div>
+        <div class="card reveal"><span class="tag">PILLAR 4</span>
+          <h3>A giant world</h3>
+          <p class="small">At 5 cm tall, a kitchen is a war zone. Table legs are pillars, cereal boxes are bunkers, and the countertop is high ground.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEEP vs MODERNIZE -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">03</span><h2>What we keep, what we modernize</h2></div>
+      <div class="card reveal">
+        <div class="table-scroll">
+        <table>
+          <thead><tr><th>From the originals</th><th>Plastic War</th><th>When</th></tr></thead>
+          <tbody>
+            <tr><td>Green army vs Tan army</td><td>Same factions. Tan are the main enemy, and other colors (Grey, Blue) can come later.</td><td><span class="pill green">Prototype</span></td></tr>
+            <tr><td>Isometric / top-down camera</td><td>Third-person over the shoulder, with a first-person toggle</td><td><span class="pill green">Prototype</span></td></tr>
+            <tr><td>Rifle and grenades</td><td>Rifle with hip-fire and aim-down-sights, plus thrown grenades along a visible arc</td><td><span class="pill green">Prototype</span></td></tr>
+            <tr><td>Jeeps and tanks</td><td>Physics-driven jeep, tank with a separately aimed turret, enter and exit with one key</td><td><span class="pill green">Prototype</span></td></tr>
+            <tr><td>Household "real world" levels</td><td>Kitchen first, then more rooms and the backyard</td><td><span class="pill green">Prototype</span> → <span class="pill tan">Later</span></td></tr>
+            <tr><td>Bazooka, flamethrower, mortar, mines, sniper</td><td>Each weapon gets one clear job. The flamethrower melts plastic.</td><td><span class="pill tan">Phase 2</span></td></tr>
+            <tr><td>Squad and commandos (Army Men II)</td><td>Simple squad orders: follow, hold, attack target</td><td><span class="pill tan">Phase 2</span></td></tr>
+            <tr><td>Battlefield maps (desert, jungle, snow)</td><td>Diorama levels with miniature terrain</td><td><span class="pill tan">Phase 3</span></td></tr>
+            <tr><td>Air Attack helicopters</td><td>A flyable helicopter vehicle and air-support missions</td><td><span class="pill tan">Phase 4</span></td></tr>
+            <tr><td>Army Men: RTS resources and base building</td><td>A light commander layer on top of the shooter</td><td><span class="pill tan">Phase 5</span></td></tr>
+            <tr><td>Toys in Space</td><td>Bonus space-themed levels or an episode</td><td><span class="pill tan">Phase 6+</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROTOTYPE SNAPSHOT -->
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">04</span><h2>The prototype in one card</h2></div>
+      <div class="grid g2">
+        <div class="dossier has-tab reveal" data-tab="OPERATION BREAKFAST">
+          <p class="typed" style="font-size:18px">Tan forces have built a radio post under the kitchen table. Fight across the kitchen floor,
+            take the jeep for a fast flank, capture a tank, smash through the cereal-box wall and destroy the radio.</p>
+          <ul class="bullets">
+            <li>1 playable green soldier with a rifle and grenades</li>
+            <li>Third-person ⇄ first-person toggle</li>
+            <li>Tan riflemen that patrol, take cover and flank <span class="pill warn">PROPOSED: ~12–16 enemies</span></li>
+            <li>A drivable <b>jeep</b> and a drivable <b>tank</b></li>
+            <li>1 kitchen map (~180 m × 144 m in-game), a win/lose screen, and restart</li>
+            <li>Plastic look: glossy shader, toppling deaths, debris</li>
+          </ul>
+          <p class="small muted">The full layout is on the <a href="world.html">Theater</a> page, and the step-by-step build is on the <a href="roadmap.html">Roadmap</a> page.</p>
+        </div>
+        <div class="card reveal">
+          <h3>How to review this plan</h3>
+          <ol style="padding-left:20px;margin:0">
+            <li style="margin:6px 0">Go through the pages using the menu at the top. Each one is short.</li>
+            <li style="margin:6px 0">Look for <span class="pill warn">PROPOSED</span> items. Those are my suggestions, not your decisions.</li>
+            <li style="margin:6px 0">Open <a href="orders.html"><b>Your Orders</b></a>. Every open decision is there with my recommended option pre-selected.</li>
+            <li style="margin:6px 0">Change anything you disagree with, add notes, then press <b>Copy my orders</b> and paste the result into our chat.</li>
+            <li style="margin:6px 0">Once you approve, I start building the prototype.</li>
+          </ol>
+          <div class="callout green small" style="margin-top:14px"><b>No code gets written until you approve.</b> Changing a plan is free. Changing code later costs time.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="pager"></div>
+<footer id="foot"></footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

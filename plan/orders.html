@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plastic War — Your Orders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Black+Ops+One&family=Special+Elite&family=Stardos+Stencil:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header id="topbar"></header>
+<main>
+  <section class="hero" style="padding-bottom:10px">
+    <div class="wrap">
+      <div class="kicker">FM-06 // Orders from command</div>
+      <h1>Your <span class="t">Orders</span></h1>
+      <p class="lead" style="margin-top:12px">These are the decisions I didn't want to make for you. My suggested option is pre-selected and marked <b>PROPOSED</b>. Change whatever you like, add notes, then copy your orders into our chat.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="dossier has-tab" data-tab="ORDERS — PLASTIC WAR PROTOTYPE">
+        <span class="stamp" style="position:absolute;right:24px;top:-22px;background:var(--paper)">AWAITING ORDERS</span>
+        <div id="orders"></div>
+
+        <div class="order">
+          <h3><span class="qn">FINAL</span>Anything else?</h3>
+          <p class="small muted">Changes to any page in the plan, ideas, memories of the original games you'd like included…</p>
+          <textarea id="general" class="notes" style="min-height:100px" placeholder="e.g. I loved the sound when soldiers died in the original…"></textarea>
+          <label class="chk" style="margin-top:12px"><input type="checkbox" id="approve"><b>Approved: start building the prototype with these orders.</b></label>
+        </div>
+
+        <div class="flex" style="margin-top:12px">
+          <button class="btn" id="copy">Copy my orders</button>
+          <button class="btn ghost" id="reset" style="color:var(--ink);border-color:#bfae84">Reset to proposed</button>
+          <span class="small muted">Your choices are saved in this browser only.</span>
+        </div>
+      </div>
+      <details class="fold" style="margin-top:20px"><summary><span class="fold-title" style="font-size:16px">Preview what will be copied</span></summary><div class="fold-body"><pre id="preview" class="small" style="white-space:pre-wrap;margin:0;font-family:var(--font-type)"></pre></div></details>
+    </div>
+  </section>
+</main>
+
+<div id="pager"></div>
+<footer id="foot"></footer>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  var Q = [
+    { id: "title", q: "Working title", why: "Just a project name for now. Since it's a private fan project, using the real name is fine too.",
+      opts: ["Plastic War", "Army Men: Reloaded", "Army Men: Kitchen Front", "Other (write in notes)"], rec: 0 },
+    { id: "hero", q: "Who do you play?", why: "The originals starred Sarge. Shown on the HUD and in the briefing text.",
+      opts: ["Sarge, the classic hero", "An unnamed green soldier", "Other name (write in notes)"], rec: 0 },
+    { id: "health", q: "Health model", why: "Affects how 'middle ground' combat feels. See the Field Manual, section 04.",
+      opts: ["Medkit pickups + small regen (up to 30 HP after 5 s out of combat)", "Medkits only, classic Army Men style", "Full regeneration, modern shooter style"], rec: 0 },
+    { id: "tanveh", q: "Do the Tan army have vehicles in the prototype?", why: "If yes, I'll add a bazooka so you can fight their tanks on foot.",
+      opts: ["No: Tan infantry only, no bazooka needed yet", "Yes: one Tan tank defends the base, and a bazooka is added"], rec: 0 },
+    { id: "death", q: "How do plastic soldiers die?", why: "This is the plastic identity at its most visible.",
+      opts: ["Freeze stiff and topple; explosions snap them into plastic pieces", "Freeze stiff and topple, no breaking", "Floppy ragdoll, the usual modern-game style (less toy-like)"], rec: 0 },
+    { id: "base", q: "Do living soldiers stand on plastic bases?", why: "In the original games, soldiers walked normally without bases. Bases look very toy-like but are odd for movement.",
+      opts: ["No bases, like the originals", "Bases only on dead soldiers and decorative props", "Always on a base (soldiers hop and shuffle like real toys)"], rec: 0 },
+    { id: "look", q: "Visual style of the world", why: "You asked for modern graphics. This decides how realistic the kitchen looks.",
+      opts: ["Realistic kitchen + glossy toy soldiers (lighting like a toy-photography shot)", "Stylized / slightly cartoony everything", "Not sure, show me both in M1 and I'll pick"], rec: 0 },
+    { id: "enemies", q: "How many Tan soldiers in the mission?", why: "Including reinforcements. More means a harder fight and a longer mission.",
+      opts: ["12–16 (a 10–20 minute mission)", "8–10 (shorter, easier)", "20–30 (a big battle)"], rec: 0 },
+    { id: "toggle", q: "Key to switch third-person ⇄ first-person", why: "You can change all keys later in settings.",
+      opts: ["V", "C (prone moves to Z)", "Middle mouse button"], rec: 0 },
+    { id: "difficulty", q: "Difficulty settings", why: "Presets mean more tuning work, but more people can enjoy the game.",
+      opts: ["One balanced difficulty for the prototype", "Easy / Normal / Hard from the start"], rec: 0 },
+    { id: "godotnet", q: "Let me test-run Godot in this cloud environment?", why: "The environment's network policy currently blocks downloading Godot from github.com release files. If you allow it (claude.ai cloud environment settings → Network access), I can catch script errors before you ever see them.",
+      opts: ["Yes, I'll allow it. Tell me the exact steps.", "Not now. I'll be the tester."], rec: 0 }
+  ];
+
+  var saved = PW.store.get("orders", {}) || {};
+  var host = document.getElementById("orders");
+  host.innerHTML = Q.map(function (q, i) {
+    var sel = saved[q.id] && saved[q.id].c != null ? saved[q.id].c : q.rec;
+    return '<div class="order"><h3><span class="qn">Q' + (i + 1) + '</span>' + q.q + '</h3><p class="small muted" style="margin:0">' + q.why + '</p>' +
+      '<div class="opts">' + q.opts.map(function (o, j) {
+        return '<label class="opt' + (j === q.rec ? " rec" : "") + '"><input type="radio" name="' + q.id + '" value="' + j + '"' + (j === sel ? " checked" : "") + ">" + o + "</label>";
+      }).join("") + "</div>" +
+      '<textarea class="notes" data-note="' + q.id + '" placeholder="Notes (optional)">' + ((saved[q.id] && saved[q.id].n) || "") + "</textarea></div>";
+  }).join("");
+
+  var general = document.getElementById("general"), approve = document.getElementById("approve");
+  general.value = PW.store.get("orders_general", "");
+  approve.checked = !!PW.store.get("orders_approve", false);
+
+  function collect() {
+    var out = {};
+    Q.forEach(function (q) {
+      var r = host.querySelector('input[name="' + q.id + '"]:checked');
+      out[q.id] = { c: r ? +r.value : q.rec, n: host.querySelector('[data-note="' + q.id + '"]').value.trim() };
+    });
+    return out;
+  }
+  function text() {
+    var o = collect(), lines = ["PLASTIC WAR — MY ORDERS", ""];
+    Q.forEach(function (q, i) {
+      var c = o[q.id].c;
+      lines.push("Q" + (i + 1) + " " + q.q + ": " + q.opts[c] + (c === q.rec ? " [proposed]" : " [CHANGED]"));
+      if (o[q.id].n) lines.push("   Note: " + o[q.id].n);
+    });
+    if (general.value.trim()) { lines.push("", "Other notes: " + general.value.trim()); }
+    lines.push("", approve.checked ? "STATUS: APPROVED, start building the prototype." : "STATUS: Not approved yet, please revise the plan first.");
+    return lines.join("\n");
+  }
+  function save() {
+    PW.store.set("orders", collect());
+    PW.store.set("orders_general", general.value);
+    PW.store.set("orders_approve", approve.checked);
+    document.getElementById("preview").textContent = text();
+    var st = document.querySelector(".stamp");
+    st.textContent = approve.checked ? "APPROVED" : "AWAITING ORDERS";
+    st.classList.toggle("green", approve.checked);
+  }
+  document.querySelector(".dossier").addEventListener("input", save);
+  document.querySelector(".dossier").addEventListener("change", save);
+  save();
+
+  document.getElementById("copy").addEventListener("click", function () {
+    var t = text();
+    function ok() { PW.toast("Orders copied — paste them into the chat"); }
+    function fb() { var a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); ok(); } catch (e) { alert(t); } a.remove(); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, fb); else fb();
+  });
+  document.getElementById("reset").addEventListener("click", function () {
+    if (!confirm("Reset every answer to the proposed option and clear notes?")) return;
+    Q.forEach(function (q) {
+      host.querySelector('input[name="' + q.id + '"][value="' + q.rec + '"]').checked = true;
+      host.querySelector('[data-note="' + q.id + '"]').value = "";
+    });
+    general.value = ""; approve.checked = false; save();
+  });
+})();
+</script>
+</body>
+</html>

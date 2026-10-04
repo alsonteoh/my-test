@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plastic War — Boot Camp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Black+Ops+One&family=Special+Elite&family=Stardos+Stencil:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .step-n { font-family: var(--font-display); font-size: 26px; color: var(--green-hi); min-width: 46px; }
+  .mac-tip { font-size: 14px; border: 1px dashed var(--tan-deep); border-radius: 8px; padding: 10px 12px; margin-top: 10px; color: var(--tan); }
+  .report label { display: block; font-family: var(--font-stencil); font-size: 14px; color: var(--ink-muted); margin-top: 10px; }
+  .report select, .report input[type=text] { width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #c3b185; background: rgba(255,255,255,.55); font-family: var(--font-body); font-size: 15px; color: var(--ink); }
+</style>
+</head>
+<body>
+<header id="topbar"></header>
+<main>
+  <section class="hero" style="padding-bottom:10px">
+    <div class="wrap">
+      <div class="kicker">FM-05 // Recruit training · Mac edition</div>
+      <h1>Boot <span class="g">Camp</span></h1>
+      <p class="lead" style="margin-top:12px">Everything you need to do on your Mac, step by step, with no coding knowledge required. Do this <b>after</b> you approve the plan. It takes about 20 minutes.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="card" style="margin-bottom:18px">
+        <div class="flex" style="justify-content:space-between"><b class="small" style="font-family:var(--font-stencil)">TRAINING PROGRESS</b><span class="small muted" data-meter-label="bc"></span></div>
+        <div class="meter" data-meter="bc" style="margin-top:8px"><i></i></div>
+      </div>
+
+      <div class="grid" style="gap:14px">
+        <details class="fold reveal" open><summary><span class="step-n">01</span><span class="fold-title">Check your Mac</span></summary>
+          <div class="fold-body">
+            <p>Click the <b>Apple menu</b> (top-left) → <b>About This Mac</b>. Next to "Chip" it should say <b>Apple M1</b>, M2, M3 or M4.</p>
+            <p class="small muted">While you're there, check for macOS updates: Apple menu → System Settings → General → Software Update. Newer macOS versions get better Metal graphics support.</p>
+            <label class="chk"><input type="checkbox" data-persist="bc1">My Mac has an Apple M-series chip</label>
+          </div>
+        </details>
+
+        <details class="fold reveal"><summary><span class="step-n">02</span><span class="fold-title">Install Godot 4</span></summary>
+          <div class="fold-body">
+            <ol style="padding-left:20px">
+              <li>Go to <a href="https://godotengine.org/download/macos/" target="_blank" rel="noopener">godotengine.org/download/macos</a>.</li>
+              <li>Download <b>Godot Engine</b>, the standard version. <b>Not</b> the ".NET" version.</li>
+              <li>Open your <b>Downloads</b> folder and double-click the <code>.zip</code> to unzip it.</li>
+              <li>Drag <b>Godot.app</b> into your <b>Applications</b> folder.</li>
+              <li>Open it from Applications. You should see the <b>Project Manager</b> window.</li>
+            </ol>
+            <div class="mac-tip">🍏 If macOS says the app "cannot be opened": go to System Settings → Privacy &amp; Security, scroll down, and click <b>Open Anyway</b> next to the Godot message.</div>
+            <label class="chk"><input type="checkbox" data-persist="bc2">Godot opens and shows the Project Manager</label>
+          </div>
+        </details>
+
+        <details class="fold reveal"><summary><span class="step-n">03</span><span class="fold-title">Install GitHub Desktop</span></summary>
+          <div class="fold-body">
+            <p>This app copies the game files I write onto your Mac, with no command line needed.</p>
+            <ol style="padding-left:20px">
+              <li>Download from <a href="https://desktop.github.com" target="_blank" rel="noopener">desktop.github.com</a>, unzip, and move it to Applications.</li>
+              <li>Open it and <b>sign in</b> with the GitHub account that owns <code>alsonteoh/my-test</code>.</li>
+            </ol>
+            <label class="chk"><input type="checkbox" data-persist="bc3">GitHub Desktop is installed and signed in</label>
+          </div>
+        </details>
+
+        <details class="fold reveal"><summary><span class="step-n">04</span><span class="fold-title">Download the project</span></summary>
+          <div class="fold-body">
+            <ol style="padding-left:20px">
+              <li>In GitHub Desktop: <b>File → Clone Repository…</b></li>
+              <li>Pick <code>alsonteoh/my-test</code>, and for "Local Path" keep the default (usually <code>Documents/GitHub/my-test</code>). Click <b>Clone</b>.</li>
+              <li>At the top, click <b>Current Branch</b> and choose <code>claude/game-dev-capabilities-40rp8f</code>. All my work goes on that branch.</li>
+            </ol>
+            <div class="mac-tip">🍏 To find the files: in GitHub Desktop, choose <b>Repository → Show in Finder</b>.</div>
+            <label class="chk"><input type="checkbox" data-persist="bc4">The project is cloned and I'm on the right branch</label>
+          </div>
+        </details>
+
+        <details class="fold reveal"><summary><span class="step-n">05</span><span class="fold-title">Open the game in Godot <span class="pill tan" style="margin-left:6px">after M0 is pushed</span></span></summary>
+          <div class="fold-body">
+            <ol style="padding-left:20px">
+              <li>In Godot's Project Manager, click <b>Import</b>.</li>
+              <li>Browse to the project folder → <code>game</code> → select <code>project.godot</code> → <b>Import</b> (or "Import &amp; Edit").</li>
+              <li>The first open takes a minute while it processes the art.</li>
+              <li>Press the <b>▶ Play</b> button at the top-right, or <kbd>F5</kbd>.</li>
+              <li>To stop playing: <kbd>Esc</kbd> frees the mouse, then click ■ Stop (or <kbd>F8</kbd>).</li>
+            </ol>
+            <div class="mac-tip">🍏 On Mac keyboards the F-keys control brightness and volume by default. Hold <kbd>fn</kbd> while pressing them (e.g. <kbd>fn</kbd>+<kbd>F5</kbd>), or just click the ▶ button.</div>
+            <label class="chk"><input type="checkbox" data-persist="bc5">I can open and play the project</label>
+          </div>
+        </details>
+
+        <details class="fold reveal"><summary><span class="step-n">06</span><span class="fold-title">Getting each new version</span></summary>
+          <div class="fold-body">
+            <p>When I tell you a milestone is ready:</p>
+            <ol style="padding-left:20px">
+              <li>GitHub Desktop → click <b>Fetch origin</b>, then <b>Pull origin</b>.</li>
+              <li>Switch back to Godot. If it asks to reload changed files, click <b>Reload</b>.</li>
+              <li>Press ▶ Play.</li>
+            </ol>
+            <div class="callout small"><b>Golden rule:</b> try not to edit files yourself in Godot for now, or they'll clash with my updates. If you do want to tweak something, like a tuning number, tell me and I'll explain how to do it safely.</div>
+            <label class="chk"><input type="checkbox" data-persist="bc6">I know how to pull updates</label>
+          </div>
+        </details>
+
+        <details class="fold reveal"><summary><span class="step-n">07</span><span class="fold-title">Reporting back to me</span></summary>
+          <div class="fold-body">
+            <ul class="bullets">
+              <li><b>Screenshot:</b> <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>4</kbd>, then drag a box. It saves to your Desktop and you can attach it in our chat.</li>
+              <li><b>Screen recording:</b> <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>5</kbd>. Great for showing how something feels.</li>
+              <li><b>Errors:</b> in Godot, open the <b>Output</b> or <b>Debugger</b> tab at the bottom. Copy any red text and paste it to me.</li>
+            </ul>
+            <label class="chk"><input type="checkbox" data-persist="bc7">I know how to send screenshots and errors</label>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head"><span class="num">⚑</span><h2>Field report generator</h2></div>
+      <p class="muted">Use this after each milestone. Fill it in, copy it, and paste it into our chat. It gives me exactly what I need.</p>
+      <div class="dossier report has-tab" data-tab="FIELD REPORT FORM">
+        <div class="grid g2">
+          <div>
+            <label for="rM">Milestone tested</label>
+            <select id="rM"><option>M0 Boot Camp</option><option>M1 Boots on the Ground</option><option>M2 Lock and Load</option><option>M3 Enemy Contact</option><option>M4 Motor Pool</option><option>M5 Heavy Armor</option><option>M6 Kitchen Dressing</option><option>M7 Operation Breakfast</option></select>
+            <label for="rF">Overall feel</label>
+            <select id="rF"><option>😀 Great</option><option>🙂 Good, needs tuning</option><option>😐 Meh</option><option>☹️ Not working</option></select>
+            <label for="rP">Smoothness (F3 counter)</label>
+            <input type="text" id="rP" placeholder="e.g. 60 fps, drops to 40 near the table">
+          </div>
+          <div>
+            <label for="rG">What felt good</label><textarea id="rG" class="notes"></textarea>
+            <label for="rB">What felt bad / bugs</label><textarea id="rB" class="notes"></textarea>
+          </div>
+        </div>
+        <div class="flex" style="margin-top:14px"><button class="btn" id="rCopy">Copy field report</button><span class="small muted">Attach screenshots separately in chat.</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="pager"></div>
+<footer id="foot"></footer>
+<script src="assets/app.js"></script>
+<script>
+document.getElementById("rCopy").addEventListener("click", function () {
+  var v = function (id) { return document.getElementById(id).value.trim() || "—"; };
+  var txt = "FIELD REPORT\nMilestone: " + v("rM") + "\nFeel: " + v("rF") + "\nPerformance: " + v("rP") +
+    "\nGood: " + v("rG") + "\nBad/bugs: " + v("rB");
+  function done() { PW.toast("Field report copied — paste it into the chat"); }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, fallback); else fallback();
+  function fallback() { var t = document.createElement("textarea"); t.value = txt; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) { alert(txt); } t.remove(); }
+});
+</script>
+</body>
+</html>
